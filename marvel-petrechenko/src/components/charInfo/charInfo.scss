@@ -7,6 +7,20 @@
     position: relative;
     z-index: 5;
     background-color: #fff;
+    &-enter {
+      opacity: 0;
+    }
+    &-enter-active {
+      opacity: 1;
+      transition: opacity 500ms ease-in;
+    }
+    &-exit {
+      opacity: 1;
+    }
+    &-exit-active {
+      opacity: 0;
+      transition: opacity 500ms ease-in;
+    }
     &-name {
       font-weight: bold;
       font-size: 22px;
