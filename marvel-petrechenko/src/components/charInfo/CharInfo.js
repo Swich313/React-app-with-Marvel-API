@@ -44,14 +44,14 @@ const CharInfo = (props) => {
 
         return (
             <>
-                //<CSSTransition in={inProp} timeout={1500} classNames="char__info">
+                {/*<CSSTransition in={inProp} timeout={1500} classNames="char__info">*/}
                 <div className="char__info">
                     {skeleton}
                     {errorMessage}
                     {spinner}
                     {content}
                 </div>
-                //</CSSTransition>
+                {/*</CSSTransition>*/}
             </>
 
         )
