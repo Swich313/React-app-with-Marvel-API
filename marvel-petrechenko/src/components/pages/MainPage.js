@@ -6,7 +6,7 @@ import CharList from "../charList/CharList";
 import CharInfo from "../charInfo/CharInfo";
 import decoration from "../../resources/img/vision.png";
 import CharSearchForm from "../charSearchForm/CharSearchForm";
-
+import {Helmet} from 'react-helmet'
 const MainPage = () => {
 
     const [selectedChar, setChar] = useState(null);
@@ -17,6 +17,12 @@ const MainPage = () => {
 
     return(
         <>
+            <Helmet>
+                <meta
+                name="description"
+                content="Marvel information portal"/>
+                <title>Marvel information</title>
+            </Helmet>
             <ErrorBoundary>
                 <RandomChar />
             </ErrorBoundary>
