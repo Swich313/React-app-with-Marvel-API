@@ -2,10 +2,29 @@ import {useState, useEffect, useRef} from "react";
 import {Link} from "react-router-dom";
 
 import useMarvelService from "../../services/MarvelService";
-import ErrorMessage from "../errorMessage/ErrorMessage";
-import Spinner from "../spinner/Spinner";
 
 import './comicsList.scss';
+import Spinner from "../spinner/Spinner";
+import ErrorMessage from "../errorMessage/ErrorMessage";
+
+const setContent = (process, Component, newItemLoading) => {
+    switch (process) {
+        case 'waiting':
+            return <Spinner />;
+        // break;
+        case 'loading':
+            return newItemLoading ? <Component /> : <Spinner />;
+        // break;
+        case 'confirmed':
+            return <Component />;
+        // break;
+        case 'error':
+            return <ErrorMessage />;
+        // break;
+        default:
+            throw  new Error('Unexpected process state');
+    }
+};
 
 const ComicsList = () => {
 
@@ -14,13 +33,15 @@ const ComicsList = () => {
     const [offset, setOffset] = useState(0);
     const [comicsEnded, setComicsEnded] = useState(false);
 
-    const {loading, error, getAllComics} = useMarvelService();
+    const {getAllComics, process, setProcess} = useMarvelService();
 
     useEffect(() => {onRequest(offset, true)}, []);
 
     const onRequest = (offset, initial) => {
         initial ? setNewComicsLoading(false) : setNewComicsLoading(true);
-        getAllComics(offset).then(onComicsListLoaded);
+        getAllComics(offset)
+            .then(onComicsListLoaded)
+            .then(() => setProcess('confirmed'));
     }
 
     const onComicsListLoaded = (newComicsList) => {
@@ -58,15 +79,9 @@ const ComicsList = () => {
         )
     }
 
-    const comics = renderComics(comicsList);
-    const errorMessage = error ? <ErrorMessage /> : null;
-    const spinner = loading && !newComicsLoading ? <Spinner /> : null;
-
     return (
         <div className="comics__list">
-            {errorMessage}
-            {spinner}
-            {comics}
+            {setContent(process, () => renderComics(comicsList), newComicsLoading)}
             <button
                 className="button button__main button__long"
                 disabled={newComicsLoading}
